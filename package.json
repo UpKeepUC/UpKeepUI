@@ -2,7 +2,7 @@
   "name": "upkeep-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://gitname.github.io/react-gh-pages",
+  "homepage": "https://upkeepuc.github.io/UpKeepUI",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
