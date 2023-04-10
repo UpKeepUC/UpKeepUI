@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6d8198bf-8824-4550-83ed-efbc14f8f8be/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/UpKeepUC",
+    "appService.deploySubpath": "."
+}
