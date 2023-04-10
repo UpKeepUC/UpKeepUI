@@ -141,7 +141,7 @@ const InventoryView = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const getData = async () => {
-      const id = window.location.pathname.split("/")[2];
+      const id = window.location.hash.split('/')[2];
       const response = await axios.get(
         apiURL + "/InventoryItem/GetInventoryItemById?id=" + id
       );
