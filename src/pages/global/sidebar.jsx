@@ -167,14 +167,14 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            <Typography
+            {/* <Typography
               variant="h5"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Admin
-            </Typography>
-            <Item
+            </Typography> */}
+            {/* <Item
               title="Admin Manager"
               to="/admin"
               icon={<AdminPanelSettingsIcon />}
@@ -194,7 +194,7 @@ const Sidebar = () => {
               icon={<HelpOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
           </Box>
         </Menu>
       </ProSidebar>

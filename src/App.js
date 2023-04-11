@@ -67,9 +67,9 @@ function App() {
               <Route path="/maintenanceTask" element={authenticated ?<MaintenanceTask />: <SignIn setAuthenticated={setAuthenticated} />} />
               <Route path="/calendar" element={authenticated ?<Calendar />: <SignIn setAuthenticated={setAuthenticated} />} />
               <Route path="/rooms" element={authenticated ?<Rooms />: <SignIn setAuthenticated={setAuthenticated} />} />
-              <Route path="/admin" element={authenticated ?<Admin />: <SignIn setAuthenticated={setAuthenticated} />} />
+              {/* <Route path="/admin" element={authenticated ?<Admin />: <SignIn setAuthenticated={setAuthenticated} />} />
               <Route path="/userForm" element={authenticated ?<UserForm />: <SignIn setAuthenticated={setAuthenticated} />} />
-              <Route path="/faq" element={authenticated ?<FAQ />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/faq" element={authenticated ?<FAQ />: <SignIn setAuthenticated={setAuthenticated} />} /> */}
               
               <Route path="/inventory/:id" element={authenticated ?<InventoryView />: <SignIn setAuthenticated={setAuthenticated} />} />
               <Route path="/maintenanceTask/:id" element={authenticated ?<MaintenanceView/>: <SignIn setAuthenticated={setAuthenticated} />}/>
