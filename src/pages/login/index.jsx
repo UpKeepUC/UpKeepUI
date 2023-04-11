@@ -13,8 +13,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useTheme, ThemeProvider } from "@mui/material/styles";
 import { tokens } from "../../theme";
-import {useNavigate} from 'react-router-dom'
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import jwtDecode from "jwt-decode";
 
 function Copyright(props) {
@@ -35,20 +35,18 @@ function Copyright(props) {
   );
 }
 
-
-
 const SignIn = ({ setAuthenticated }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   useEffect(() => {
     let token = localStorage.getItem("upkeeptoken");
 
-    if(token !== null){
-      try{
+    if (token !== null) {
+      try {
         let decodedToken = jwtDecode(token);
         console.log("Decoded Token", decodedToken);
         let currentDate = new Date();
-  
+
         // JWT exp is in seconds
         if (decodedToken.exp * 1000 < currentDate.getTime()) {
           console.log("Token expired.");
@@ -57,20 +55,17 @@ const SignIn = ({ setAuthenticated }) => {
           setAuthenticated(true);
           navigate("/home");
         }
-      }
-      catch(err){
-        console.log(err);      
+      } catch (err) {
+        console.log(err);
       }
     }
-
-  },[]);
-
+  }, []);
 
   const navigate = useNavigate();
 
   const handleSignUp = (event) => {
-    navigate("/register")
-  }
+    navigate("/register");
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -78,30 +73,28 @@ const SignIn = ({ setAuthenticated }) => {
     fetchSignIn(data);
   };
 
-
   async function fetchSignIn(data) {
     const apiURL = process.env.REACT_APP_API_URL;
-      console.log("attempting login");
+    console.log("attempting login");
 
-        //make post call to save
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: data.get("email"),
-            password: data.get("password"),
-          }),
-        };
-        fetch(apiURL + "/Accounts/Login/Login", requestOptions)
-          .then((response) => response.text())
-          .then((data) => {
-
-            if(data !== "Invalid Authentication"){
-              setAuthenticated(true);
-              localStorage.setItem('upkeeptoken', data);
-              navigate("/home");
-            }
-          });
+    //make post call to save
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: data.get("email"),
+        password: data.get("password"),
+      }),
+    };
+    fetch(apiURL + "/Accounts/Login/Login", requestOptions)
+      .then((response) => response.text())
+      .then((data) => {
+        if (data !== "Invalid Authentication") {
+          setAuthenticated(true);
+          localStorage.setItem("upkeeptoken", data);
+          navigate("/home");
+        }
+      });
   }
 
   return (
@@ -170,12 +163,12 @@ const SignIn = ({ setAuthenticated }) => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" color="inherit" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link onClick={handleSignUp} variant="body2">
+                <Link onClick={handleSignUp} color="inherit" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -186,6 +179,6 @@ const SignIn = ({ setAuthenticated }) => {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export default SignIn;
