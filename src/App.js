@@ -56,25 +56,22 @@ function App() {
           <main className="content">
             <Topbar />
             <Routes>
-              <Route path="/login" element={<SignIn setAuthenticated={setAuthenticated} />} />
-                
-
+              <Route path="/login" element={<SignIn setAuthenticated={setAuthenticated} />} />           
               <Route path="/" element={authenticated ? <Home /> : <SignIn setAuthenticated={setAuthenticated} />} />
-
 
               <Route path="/register" element={<SignUp />} />
 
-              <Route path="/home" element={<Home />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/maintenanceTask" element={<MaintenanceTask />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/rooms" element={<Rooms />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/userForm" element={<UserForm />} />
-              <Route path="/faq" element={<FAQ />} />
+              <Route path="/home" element={authenticated ?<Home />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/inventory" element={authenticated ?<Inventory /> :<SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/maintenanceTask" element={authenticated ?<MaintenanceTask />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/calendar" element={authenticated ?<Calendar />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/rooms" element={authenticated ?<Rooms />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/admin" element={authenticated ?<Admin />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/userForm" element={authenticated ?<UserForm />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/faq" element={authenticated ?<FAQ />: <SignIn setAuthenticated={setAuthenticated} />} />
               
-              <Route path="/inventory/:id" element={<InventoryView />} />
-              <Route path="/maintenanceTask/:id" element={<MaintenanceView/>}/>
+              <Route path="/inventory/:id" element={authenticated ?<InventoryView />: <SignIn setAuthenticated={setAuthenticated} />} />
+              <Route path="/maintenanceTask/:id" element={authenticated ?<MaintenanceView/>: <SignIn setAuthenticated={setAuthenticated} />}/>
             </Routes>
           </main>
         </div>
