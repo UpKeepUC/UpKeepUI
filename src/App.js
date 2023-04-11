@@ -16,10 +16,34 @@ import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import InventoryView from "./pages/inventory/view";
 import MaintenanceView from "./pages/maintenanceTask/view";
+import jwtDecode from "jwt-decode";
 
 function App() {
   const [theme, colorMode] = useMode();
   const [authenticated, setAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let token = localStorage.getItem("upkeeptoken");
+
+    if (token !== null) {
+      try {
+        let decodedToken = jwtDecode(token);
+        let currentDate = new Date();
+
+        // JWT exp is in seconds
+        if (decodedToken.exp * 1000 < currentDate.getTime()) {
+          navigate("/login");
+        } else {
+          setAuthenticated(true);
+        }
+      } catch (err) {
+        console.log(err);
+        navigate("/login");
+      }
+    }
+
+  },[]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
