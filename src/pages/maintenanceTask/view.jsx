@@ -26,6 +26,8 @@ import axios from "axios";
 const MaintenanceView = () => {
   const navigate = useNavigate();
   const [maintenanceTaskTypes, setMaintenanceTaskTypes] = useState([]);
+  const [inventoryItems, setInventoryItems] = useState([]);
+  const [inventoryItemIds, setInventoryItemIds] = useState([])
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
   const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(dayjs("2000-01-01"));
@@ -70,6 +72,11 @@ const MaintenanceView = () => {
       }
     }
 
+  const handleLinkChange = (event) =>{
+    console.log(event);
+    setInventoryItemIds(event.target.value);
+  }  
+
   const handleCloseClick = (event) => {
     // setup onclose handler instead of refreshing page
     navigate("/maintenanceTask");
@@ -99,6 +106,21 @@ const MaintenanceView = () => {
       .then((response) => response.json())
       .then((data) => console.log(data));
 
+    const linkModel = {
+      inventoryItemIds: inventoryItemIds,
+      maintenanceTaskId: window.location.hash.split('/')[2]
+    }
+
+    const linkRequestOptions ={
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(linkModel),
+    }
+
+    fetch(apiURL + "/MaintenanceTask/LinkInventoryToMaintenanceTask", linkRequestOptions)
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+
     // setup onclose handler instead of refreshing page
     navigate("/maintenanceTask");
   };
@@ -124,7 +146,14 @@ const MaintenanceView = () => {
       );
       if (typeResponse.data) {
         setMaintenanceTaskTypes(typeResponse.data);
-      } 
+      }
+      
+      fetch(apiURL + "/InventoryItem/GetInventoryItems")
+      .then((response) => response.json())
+      .then((json) => {
+        setInventoryItems(json);
+      });
+ 
     };
     getData();
   }, []);
@@ -214,8 +243,33 @@ const MaintenanceView = () => {
                   color="grey"
                   sx={{ gridColumn: "span 6" }}
                 />
-              </LocalizationProvider>  
+              </LocalizationProvider>
+
+              <FormControl sx={{ gridColumn: "span 6" }}>
+            <InputLabel color="grey" id="LinkedInventoryItems">
+              Linked Inventory Items
+            </InputLabel>
+            <Select
+              labelId="LinkedInventoryItems"
+              id="linkedInventoryItems"
+              multiple
+              value={inventoryItemIds}
+              label="Linked Inventory Items"
+              onChange={handleLinkChange}
+              variant="filled"
+              color="grey"
+            >
+              {inventoryItems.map((inventoryItem) => (
+                <MenuItem
+                  value={inventoryItem.inventoryItemId}
+                >
+                  {inventoryItem.roomModel.roomNumber + " : " + inventoryItem.inventoryItemTypeModel.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>  
         </Box>
+        
       </DialogContent>
       <DialogActions>
           <Button
