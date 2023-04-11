@@ -15,6 +15,7 @@ import FAQ from "./pages/faq";
 import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import InventoryView from "./pages/inventory/view";
+import MaintenanceView from "./pages/maintenanceTask/view";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -49,6 +50,7 @@ function App() {
               <Route path="/faq" element={<FAQ />} />
               
               <Route path="/inventory/:id" element={<InventoryView />} />
+              <Route path="/maintenanceTask/:id" element={<MaintenanceView/>}/>
             </Routes>
           </main>
         </div>

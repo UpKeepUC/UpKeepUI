@@ -14,10 +14,13 @@ import {
   FormControl,
   InputLabel,
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
+import { tokens } from "../../theme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
 
 const InventoryView = () => {
@@ -35,6 +38,10 @@ const InventoryView = () => {
   const [qrCodeId, setQrCodeId] = useState("");
 
   const [responseReceived, setResponseReceived] = useState(false);
+
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleInventoryItemChange = (event) => {
     setInventoryItemTypeId(event.target.value); //inventory item type id
@@ -176,112 +183,130 @@ const InventoryView = () => {
     <Dialog open={responseReceived} m="20px">
       <DialogTitle>INVENTORY ITEM</DialogTitle>
       <DialogContent>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container direction="row" padding="10px">
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="InventoryItemTypes">
-                  Inventory Item Type
-                </InputLabel>
-                <Select
-                  labelId="InventoryItemTypes"
-                  id="inventoryItemTypes"
-                  defaultValue={inventoryTypeId}
-                  label="Inventory Item Type"
-                  onChange={handleInventoryItemChange}
-                >
-                  {inventoryItemTypes.map((inventoryItemTypeModel) => (
-                    <MenuItem
-                      value={inventoryItemTypeModel.inventoryItemTypeId}
-                    >
-                      {inventoryItemTypeModel.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="Rooms">Rooms</InputLabel>
-                <Select
-                  labelId="Rooms"
-                  id="rooms"
-                  defaultValue={roomId}
-                  label="Room"
-                  onChange={handleRoomChange}
-                >
-                  {roomModel.map((roomModel) => (
-                    <MenuItem value={roomModel.roomId}>
-                      {roomModel.roomLocation} - {roomModel.roomNumber}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid container direction="row">
-            <Grid item xs={12} padding="10px">
-              <TextField
-                label="Cost"
-                required
-                name="inventoryItemCost"
-                fullWidth
-                id="inventoryItemCost"
-                defaultValue={inventoryItemCost}
-                onChange={handleInventoryItemCost}
-              />
-            </Grid>
-            <Grid item xs={12} padding="10px">
-              <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Purchase Date"
-                  defaultValue={dayjs(purchaseDate)}
-                  onChange={handlePurchaseDate}
-                />
-              </LocalizationProvider>
-            </Grid>
-          </Grid>
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
+        >
+          <FormControl sx={{ gridColumn: "span 4" }}>
+            <InputLabel id="InventoryItemTypes">Inventory Item Type</InputLabel>
+            <Select
+              labelId="InventoryItemTypes"
+              id="inventoryItemTypes"
+              variant="filled"
+              defaultValue={inventoryTypeId}
+              label="Inventory Item Type"
+              onChange={handleInventoryItemChange}
+            >
+              {inventoryItemTypes.map((inventoryItemTypeModel) => (
+                <MenuItem value={inventoryItemTypeModel.inventoryItemTypeId}>
+                  {inventoryItemTypeModel.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl sx={{ gridColumn: "span 4" }}>
+            <InputLabel id="Rooms">Rooms</InputLabel>
+            <Select
+              labelId="Rooms"
+              id="rooms"
+              variant="filled"
+              defaultValue={roomId}
+              label="Room"
+              onChange={handleRoomChange}
+            >
+              {roomModel.map((roomModel) => (
+                <MenuItem value={roomModel.roomId}>
+                  {roomModel.roomLocation} - {roomModel.roomNumber}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Cost"
+            required
+            variant="filled"
+            name="inventoryItemCost"
+            fullWidth
+            id="inventoryItemCost"
+            defaultValue={inventoryItemCost}
+            onChange={handleInventoryItemCost}
+            sx={{ gridColumn: "span 4" }}
+          />
+
+          <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Purchase Date"
+              variant="filled"
+              defaultValue={dayjs(purchaseDate)}
+              onChange={handlePurchaseDate}
+              sx={{ gridColumn: "span 4" }}
+            />
+          </LocalizationProvider>
 
           {qrCodeGenerated && <img src={qrCodeImage} alt="qr code here" />}
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleSubmit}
+        <Box
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
         >
-          Save
-        </Button>
-        <Button
-          color="error"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleDeleteClick}
-        >
-          Delete
-        </Button>
-        <Button
-          color="secondary"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleGenerateClick}
-        >
-          Generate QR Code
-        </Button>
-        <Button
-          color="error"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-          onClick={handleCloseClick}
-        >
-          Close
-        </Button>
+          <Button
+            color="secondary"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleGenerateClick}
+          >
+            Generate QR Code
+          </Button>
+          <Button
+            type="submit"
+            color="success"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+          >
+            Save
+          </Button>
+          <Button
+            color="error"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleDeleteClick}
+          >
+            Delete
+          </Button>
+
+          <Button
+            color="warning"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleCloseClick}
+          >
+            Close
+          </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

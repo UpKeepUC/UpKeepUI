@@ -108,6 +108,7 @@ const CreateMaintenanceTaskModal = ({
         </InputLabel>
         <Select
           color="grey"
+          required
           labelId="MaintenanceTaskTypes"
           id="maintenanceTaskTypes"
           helperText="Please select your Maintenance Task Type"
@@ -130,6 +131,7 @@ const CreateMaintenanceTaskModal = ({
         <Select
           color="grey"
           labelId="Rooms"
+          required
           id="rooms"
           helperText="Please select a location"
           variant="filled"
@@ -159,6 +161,8 @@ const CreateMaintenanceTaskModal = ({
       />
       <TextField
         fullWidth
+        required
+        multiline
         color="grey"
         variant="filled"
         placeholder="Description of Task"

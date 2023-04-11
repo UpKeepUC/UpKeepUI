@@ -15,12 +15,17 @@ const columns = [
   {
     field: "maintenanceTaskType",
     headerName: "Task Type",
-    flex: 1,
+    flex: 0.5,
     valueFormatter: ({ value }) => value.name,
   },
-  { field: "name", headerName: "Name", flex: 1 },
-  { field: "description", headerName: "Description", flex: 1 },
-  { field: "maintenanceTaskDueDate", headerName: "Task Due Date", flex: 1 },
+  { field: "name", headerName: "Name", flex: 0.5 },
+  { field: "description", headerName: "Description", flex: 1.25 },
+  {
+    field: "maintenanceTaskDueDate",
+    headerName: "Task Due Date",
+    valueGetter: ({ value }) => value && new Date(value),
+    flex: 1,
+  },
 ];
 
 const MaintenanceTasksTableStyles = {
@@ -40,18 +45,18 @@ const MaintenanceTable = ({ onError }) => {
         console.log(json);
       })
       .catch(() => onError());
-  }, []);
+  }, []); 
 
-  return (
-    <DataTable
-      rows={maintenanceTasks}
-      columns={columns}
-      loading={!maintenanceTasks.length}
-      sx={MaintenanceTasksTableStyles}
-      getRowId={(row) => row.maintenanceTaskId}
-      // handleClick={(event) => navigate('/maintenanceTask/' + event.id)}
-    />
-  );
+return (
+        <DataTable
+            rows={maintenanceTasks}
+            columns={columns}
+            loading={!maintenanceTasks.length}
+            sx={MaintenanceTasksTableStyles}
+            getRowId={(row) => row.maintenanceTaskId}
+            handleClick={(event) => navigate('/maintenanceTask/' + event.id)}
+            />
+    );
 };
 
 export default MaintenanceTable;
