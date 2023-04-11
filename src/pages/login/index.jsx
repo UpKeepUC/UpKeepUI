@@ -67,6 +67,11 @@ const SignIn = ({ setAuthenticated }) => {
 
 
   const navigate = useNavigate();
+
+  const handleSignUp = (event) => {
+    navigate("/register")
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -167,7 +172,7 @@ const SignIn = ({ setAuthenticated }) => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="UpKeepUI#/register" variant="body2">
+                <Link onClick={handleSignUp} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
