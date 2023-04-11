@@ -23,11 +23,8 @@ import axios from "axios";
 const MaintenanceView = () => {
   const navigate = useNavigate();
   const [maintenanceTaskTypes, setMaintenanceTaskTypes] = useState([]);
-  const [roomModel, setRoomModel] = useState([]);
-
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
-  const [roomId, setRoomId] = useState(-1);
   const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(new Date());
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -38,9 +35,6 @@ const MaintenanceView = () => {
     setMaintenanceTaskTypeId(event.target.value); 
   };
 
-  const handleRoomChange = (event) => {
-    setRoomId(event.target.value);
-  }
 
   const handleMaintenanceTaskDueDate = (event) => {
     setMaintenanceTaskDueDate(event.target.value);
@@ -61,7 +55,6 @@ const MaintenanceView = () => {
     const maintenanceModel = {
         MaintenanceTaskId: 0,
         MaintenanceTaskTypeId: maintenanceTaskTypeId,
-        RoomId: roomId,
         Name: name,
         Description: description,
         MaintenanceTaskDueDate: maintenanceTaskDueDate
@@ -73,7 +66,7 @@ const MaintenanceView = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(maintenanceModel),
     };
-      fetch(apiURL + '/MaintenanceTask/DeleteMaintenanceTask', requestOptions)
+      fetch(apiURL + "/MaintenanceTask/DeleteMaintenanceTask", requestOptions)
         .then(response => response.json())
         .then(data => console.log(data));
       
@@ -95,7 +88,6 @@ const MaintenanceView = () => {
     const maintenanceModel = {
         MaintenanceTaskId: 0,
         MaintenanceTaskTypeId: maintenanceTaskTypeId,
-        RoomId: roomId,
         Name: name,
         Description: description,
         MaintenanceTaskDueDate: maintenanceTaskDueDate
@@ -126,23 +118,18 @@ const MaintenanceView = () => {
       if (response.data) {
         setMaintenanceTaskTypeId(response.data.maintenanceTaskTypeId);
         setMaintenanceTaskDueDate(response.data.MaintenanceTaskDueDate);
-        setRoomId(response.data.roomId);
         setName(response.data.name);
         setDescription(response.data.description);
         setResponseReceived(true);
       }
 
       const typeResponse = await axios.get(
-        apiURL + "MaintenanceTaskType/GetMaintenanceTaskTypes"
+        apiURL + "/MaintenanceTaskType/GetMaintenanceTaskTypes"
       );
       if (typeResponse.data) {
         setMaintenanceTaskTypes(typeResponse.data);
-      }
-
-      const roomResponse = await axios.get(apiURL + "/Room/GetRooms");
-      if (roomResponse.data) {
-        setRoomModel(roomResponse.data);
-      }
+        console.log(typeResponse);
+      } 
     };
     getData();
   }, []);
@@ -160,17 +147,14 @@ const MaintenanceView = () => {
                   Maintenance Task Type
                 </InputLabel>
                 <Select
-                color="grey"
                 labelId="MaintenanceTaskTypes"
                 id="maintenanceTaskTypes"
                   defaultValue={maintenanceTaskTypeId}
-                  label="Inventory Item Type"
+                  label="Maintenance Task Type"
                   onChange={handleMaintenanceTaskChange}
                 >
                   {maintenanceTaskTypes.map((maintenanceTaskTypeModel) => (
-                    <MenuItem
-                      value={maintenanceTaskTypeModel.maintenanceTaskTypeId}
-                    >
+                    <MenuItem value={maintenanceTaskTypeModel.maintenanceTaskTypeId}>
                       {maintenanceTaskTypeModel.name}
                     </MenuItem>
                   ))}
