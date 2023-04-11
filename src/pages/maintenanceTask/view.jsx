@@ -25,7 +25,7 @@ const MaintenanceView = () => {
   const [maintenanceTaskTypes, setMaintenanceTaskTypes] = useState([]);
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
-  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(new Date());
+  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(dayjs("2000-01-01"));
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -37,7 +37,7 @@ const MaintenanceView = () => {
 
 
   const handleMaintenanceTaskDueDate = (event) => {
-    setMaintenanceTaskDueDate(event.target.value);
+    setMaintenanceTaskDueDate(event.$d);
   };
 
   const handleName = (event) => {
@@ -86,12 +86,15 @@ const MaintenanceView = () => {
 
     //build update model
     const maintenanceModel = {
-        MaintenanceTaskId: 0,
+        MaintenanceTaskId: window.location.hash.split('/')[2],
         MaintenanceTaskTypeId: maintenanceTaskTypeId,
         Name: name,
         Description: description,
-        MaintenanceTaskDueDate: maintenanceTaskDueDate
+        MaintenanceTaskDueDate: maintenanceTaskDueDate,
+        MaintenanceTaskCompletedDate: null
       };
+
+      console.log("updating mt");
 
     //submit post
     const requestOptions = {
