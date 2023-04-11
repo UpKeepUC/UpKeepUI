@@ -26,7 +26,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="https://upkeepuc.github.io/UpKeepUI/#/">
         UpKeep
       </Link>{" "}
       {new Date().getFullYear()}
@@ -169,7 +169,7 @@ const SignIn = ({ setAuthenticated }) => {
               </Grid>
               <Grid item>
                 <Link onClick={handleSignUp} color="inherit" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account? Register & Sign Up"}
                 </Link>
               </Grid>
             </Grid>

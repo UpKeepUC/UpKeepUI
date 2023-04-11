@@ -11,7 +11,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTheme, ThemeProvider } from "@mui/material/styles";
+import { tokens } from "../../theme";
 
 function Copyright(props) {
   return (
@@ -22,8 +23,8 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://upkeepuc.github.io/UpKeepUI/#/">
+        UpKeep
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -31,33 +32,33 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
-
 export default function SignUp() {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const handleSubmit = (event) => {
     event.preventDefault();
     const apiURL = process.env.REACT_APP_API_URL;
     const data = new FormData(event.currentTarget);
 
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+        confirmPassword: data.get("password"),
+        userName: data.get("email"),
+      }),
+    };
 
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName: data.get("firstName"),
-          lastName: data.get("lastName"),
-          email: data.get("email"),
-          password: data.get("password"),
-          confirmPassword: data.get("password"),
-          userName: data.get("email"),
-        }),
-      };
-
-    
-    fetch("https://localhost:7285/api/Accounts/Register/Register", requestOptions)
-          .then((response) => response.json())
-          .then((data) => console.log(data));
-        
+    fetch(
+      "https://localhost:7285/api/Accounts/Register/Register",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   };
 
   return (
@@ -72,11 +73,14 @@ export default function SignUp() {
             alignItems: "center",
           }}
         >
+          <Typography component="h1" variant="h1" mb="20px">
+            UpKeep
+          </Typography>
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Register Account
           </Typography>
           <Box
             component="form"
@@ -90,6 +94,8 @@ export default function SignUp() {
                   autoComplete="given-name"
                   name="firstName"
                   required
+                  variant="filled"
+                  color="grey"
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -99,6 +105,8 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
+                  variant="filled"
+                  color="grey"
                   fullWidth
                   id="lastName"
                   label="Last Name"
@@ -109,6 +117,8 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   required
+                  variant="filled"
+                  color="grey"
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -119,6 +129,8 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <TextField
                   required
+                  variant="filled"
+                  color="grey"
                   fullWidth
                   name="password"
                   label="Password"
@@ -127,17 +139,10 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
+              color="secondary"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
@@ -146,7 +151,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/login" color="inherit" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
