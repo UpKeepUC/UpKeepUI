@@ -107,6 +107,9 @@ const SignIn = ({ setAuthenticated }) => {
             alignItems: "center",
           }}
         >
+          <Typography component="h1" variant="h1" mb="20px">
+            UpKeep
+          </Typography>
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
