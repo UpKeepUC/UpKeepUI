@@ -9,9 +9,14 @@ const columns = [
     headerAlign: "left",
     align: "left",
   },
-  { field: "name", headerName: "Name", flex: 1 },
-  { field: "description", headerName: "Description", flex: 1 },
-  { field: "maintenanceTaskDueDate", headerName: "Task Due Date", flex: 1 },
+  { field: "name", headerName: "Name", flex: 0.5 },
+  { field: "description", headerName: "Description", flex: 1.25 },
+  {
+    field: "maintenanceTaskDueDate",
+    headerName: "Task Due Date",
+    valueGetter: ({ value }) => value && new Date(value),
+    flex: 1,
+  },
 ];
 
 const MaintenanceTasksTableStyles = {
