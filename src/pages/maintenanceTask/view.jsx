@@ -220,16 +220,6 @@ const MaintenanceView = () => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Box
-          display="grid"
-          gap="30px"
-          gridTemplateColumns="repeat(3, minmax(0, 1fr))"
-          sx={{
-            mt: 3,
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            "& .MuiTextField-root": { alignContent: "center" },
-          }}
-        >
           <Button
             type="submit"
             color="success"
@@ -237,6 +227,7 @@ const MaintenanceView = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleSubmit}
+            size="large"
           >
             Save
           </Button>
@@ -246,6 +237,7 @@ const MaintenanceView = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleDeleteClick}
+            size="large"
           >
             Delete
           </Button>
@@ -255,10 +247,11 @@ const MaintenanceView = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             onClick={handleCloseClick}
+            size="large"
           >
             Cancel
           </Button>
-        </Box>
+        
       </DialogActions>
     </Dialog>
   );
