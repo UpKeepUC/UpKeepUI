@@ -26,6 +26,7 @@ const MaintenanceView = () => {
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
   const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(dayjs("2000-01-01"));
+  const [maintenanceTaskCompletedDate, setMaintenanceTaskCompletedDate] = useState(dayjs("2000-01-01"));
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -35,6 +36,9 @@ const MaintenanceView = () => {
     setMaintenanceTaskTypeId(event.target.value); 
   };
 
+  const handleMaintenanceTaskCompletedDate = (event) => {
+    setMaintenanceTaskCompletedDate(event.$d);
+  }
 
   const handleMaintenanceTaskDueDate = (event) => {
     setMaintenanceTaskDueDate(event.$d);
@@ -47,32 +51,16 @@ const MaintenanceView = () => {
     setDescription(event.target.value);
   };
 
-    const handleDeleteClick = (event) => {
+    const handleDeleteClick = async (event) => {
       event.preventDefault();
       const apiURL = process.env.REACT_APP_API_URL;
+      const id = window.location.hash.split('/')[2];
 
-    //build update model
-    const maintenanceModel = {
-        MaintenanceTaskId: 0,
-        MaintenanceTaskTypeId: maintenanceTaskTypeId,
-        Name: name,
-        Description: description,
-        MaintenanceTaskDueDate: maintenanceTaskDueDate
-      };
+      const response = await axios.get(apiURL+"/MaintenanceTask/DeleteMaintenanceTask?id=" + id);
 
-    //submit post
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(maintenanceModel),
-    };
-      fetch(apiURL + "/MaintenanceTask/DeleteMaintenanceTask", requestOptions)
-        .then(response => response.json())
-        .then(data => console.log(data));
-      
-
+      if(response.data){
         navigate('/maintenanceTask');
-        window.location.reload();
+      }
     }
 
     const handleCloseClick = (event) => {
@@ -91,7 +79,7 @@ const MaintenanceView = () => {
         Name: name,
         Description: description,
         MaintenanceTaskDueDate: maintenanceTaskDueDate,
-        MaintenanceTaskCompletedDate: null
+        MaintenanceTaskCompletedDate: maintenanceTaskCompletedDate
       };
 
 
@@ -107,7 +95,6 @@ const MaintenanceView = () => {
 
     // setup onclose handler instead of refreshing page
     navigate("/maintenanceTask");
-    window.location.reload();
   };
 
   const apiURL = process.env.REACT_APP_API_URL;
@@ -120,6 +107,7 @@ const MaintenanceView = () => {
       if (response.data) {
         setMaintenanceTaskTypeId(response.data.maintenanceTaskTypeId);
         setMaintenanceTaskDueDate(response.data.MaintenanceTaskDueDate);
+        setMaintenanceTaskCompletedDate(response.data.MaintenanceTaskCompletedDate);
         setName(response.data.name);
         setDescription(response.data.description);
         setResponseReceived(true);
@@ -130,7 +118,6 @@ const MaintenanceView = () => {
       );
       if (typeResponse.data) {
         setMaintenanceTaskTypes(typeResponse.data);
-        console.log(typeResponse);
       } 
     };
     getData();
@@ -193,6 +180,15 @@ const MaintenanceView = () => {
                   label="Maintenance Task Due Date"
                   defaultValue={dayjs(maintenanceTaskDueDate)}
                   onChange={handleMaintenanceTaskDueDate}
+                />
+              </LocalizationProvider>              
+              </Grid>
+              <Grid item xs={12} padding="10px">
+              <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Maintenance Task Completed Date"
+                  defaultValue={dayjs(maintenanceTaskDueDate)}
+                  onChange={handleMaintenanceTaskCompletedDate}
                 />
               </LocalizationProvider>              
               </Grid>

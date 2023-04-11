@@ -42,7 +42,6 @@ const MaintenanceTable = ({ onError }) => {
       .then((response) => response.json())
       .then((json) => {
         setMaintenanceTasks(json);
-        console.log(json);
       })
       .catch(() => onError());
   }, []); 
