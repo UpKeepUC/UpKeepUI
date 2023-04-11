@@ -3,11 +3,11 @@ import Header from "../../components/common/Header";
 
 const Admin = () => {
   return (
-  <Box m="20px">
-    <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Header title="ADMIN MANAGER" subtitle="Admin Mangement!" />
+    <Box m="20px">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="ADMIN MANAGER" subtitle="Admin Mangement!" />
+      </Box>
     </Box>
-  </Box>
   );
 };
 

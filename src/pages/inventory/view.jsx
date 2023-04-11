@@ -24,8 +24,8 @@ const InventoryView = () => {
   const navigate = useNavigate();
   const [inventoryItemTypes, setInventoryItemTypes] = useState([]);
   const [roomModel, setRoomModel] = useState([]);
-    const [qrCodeGenerated, setQRCodeGenerated] = useState(false);
-    const [qrCodeImage, setQRCodeImage] = useState("");
+  const [qrCodeGenerated, setQRCodeGenerated] = useState(false);
+  const [qrCodeImage, setQRCodeImage] = useState("");
 
   const [inventoryItemId, setInventoryItemId] = useState(-1);
   const [inventoryTypeId, setInventoryItemTypeId] = useState(-1);
@@ -53,31 +53,34 @@ const InventoryView = () => {
     setPurchaseDate(event.$d);
   };
 
-    const handleGenerateClick = (event) => {
-      if(!qrCodeGenerated){
+  const handleGenerateClick = (event) => {
+    if (!qrCodeGenerated) {
       //get page link
       const link = window.location.href;
       console.log(link);
 
       //submit post
       const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-    };
-      fetch(apiURL + '/QRCode/GenerateQRCodeForInventoryItem?link=' + link, requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          setQRCodeImage('data:image/png;base64,'+ data.fileContents);
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      };
+      fetch(
+        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + link,
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setQRCodeImage("data:image/png;base64," + data.fileContents);
 
           console.log(qrCodeImage);
           setQRCodeGenerated(true);
         });
-      }
     }
+  };
 
-    const handleDeleteClick = (event) => {
-      event.preventDefault();
-      const apiURL = process.env.REACT_APP_API_URL;
+  const handleDeleteClick = (event) => {
+    event.preventDefault();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     //build update model
     const inventoryModel = {
@@ -95,23 +98,22 @@ const InventoryView = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(inventoryModel),
     };
-      fetch(apiURL + '/InventoryItem/DeleteInventoryItem', requestOptions)
-        .then(response => response.json())
-        .then(data => console.log(data));
-      
+    fetch(apiURL + "/InventoryItem/DeleteInventoryItem", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
 
-        navigate('/inventory');
-        window.location.reload();
-    }
+    navigate("/inventory");
+    window.location.reload();
+  };
 
-    const handleCloseClick = (event) => {
-       // setup onclose handler instead of refreshing page
-       navigate('/inventory');
-    }
-  
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const apiURL = process.env.REACT_APP_API_URL;
+  const handleCloseClick = (event) => {
+    // setup onclose handler instead of refreshing page
+    navigate("/inventory");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     //build update model
     const inventoryModel = {
@@ -141,7 +143,7 @@ const InventoryView = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const getData = async () => {
-      const id = window.location.hash.split('/')[2];
+      const id = window.location.hash.split("/")[2];
       const response = await axios.get(
         apiURL + "/InventoryItem/GetInventoryItemById?id=" + id
       );
@@ -169,7 +171,6 @@ const InventoryView = () => {
     };
     getData();
   }, []);
-
 
   return (
     <Dialog open={responseReceived} m="20px">
@@ -237,62 +238,53 @@ const InventoryView = () => {
                   defaultValue={dayjs(purchaseDate)}
                   onChange={handlePurchaseDate}
                 />
-              </LocalizationProvider>              
-              </Grid>
+              </LocalizationProvider>
             </Grid>
+          </Grid>
 
-            {qrCodeGenerated &&
-                <img src={qrCodeImage} alt='qr code here'/>
-            }
-            </Box>
-            </DialogContent>
-            <DialogActions>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </Button>
-            <Button
-              color="secondary"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleGenerateClick}
-            >
-              Generate QR Code
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleCloseClick}
-            >
-              Close
-            </Button>
-            </DialogActions>
-            
+          {qrCodeGenerated && <img src={qrCodeImage} alt="qr code here" />}
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
+        <Button
+          color="error"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleDeleteClick}
+        >
+          Delete
+        </Button>
+        <Button
+          color="secondary"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleGenerateClick}
+        >
+          Generate QR Code
+        </Button>
+        <Button
+          color="error"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+          onClick={handleCloseClick}
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
-                    
-        
-        
-
-        
-      </Dialog>
-    );
-  };
-  
-  export default InventoryView;
+export default InventoryView;

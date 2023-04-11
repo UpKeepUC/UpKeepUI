@@ -1,5 +1,5 @@
 import { Box, Grid, Modal } from "@mui/material";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import Header from "../../components/common/Header";
 import "../../index.css";
 import RoomModal from "../../components/RoomModal/RoomModal";
@@ -10,15 +10,14 @@ const Rooms = ({ onError }) => {
 
   const apiURL = process.env.REACT_APP_API_URL;
 
-  useEffect( () => {
-    fetch(apiURL + '/Room/GetRooms')
-            .then((response) => response.json())
-            .then((json) => {
-                setRooms(json)
-            })
-            .catch(() => onError());        
+  useEffect(() => {
+    fetch(apiURL + "/Room/GetRooms")
+      .then((response) => response.json())
+      .then((json) => {
+        setRooms(json);
+      })
+      .catch(() => onError());
   });
-
 
   const handleRoomClick = (room) => {
     setRoom(room);
@@ -26,19 +25,14 @@ const Rooms = ({ onError }) => {
 
   return (
     <Box m="20px">
-      
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="ROOMS" subtitle="" />
       </Box>
       <Box mt="20px">
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-            <Box className="floor-plan">
+              <Box className="floor-plan">
                 {rooms.map((room) => (
                   <div
                     key={room.roomId}
@@ -47,15 +41,18 @@ const Rooms = ({ onError }) => {
                   >
                     <div className="room-number">{room.roomNumber}</div>
                   </div>
-                  
                 ))}
-                
               </Box>
             </Box>
           </Grid>
-        </Grid>        
+        </Grid>
       </Box>
-      {selectedRoom && <RoomModal selectedObject={selectedRoom} onClose={() => setRoom(null)}/>}
+      {selectedRoom && (
+        <RoomModal
+          selectedObject={selectedRoom}
+          onClose={() => setRoom(null)}
+        />
+      )}
     </Box>
   );
 };

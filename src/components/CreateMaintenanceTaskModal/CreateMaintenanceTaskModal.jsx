@@ -10,24 +10,30 @@ import BasicModal from "../common/BasicModal/BasicModal";
 import Select from "@mui/material/Select";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const CreateMaintenanceTaskModal = ({ open, onClose, addNewMaintenanceTask }) => {
+const CreateMaintenanceTaskModal = ({
+  open,
+  onClose,
+  addNewMaintenanceTask,
+}) => {
   const [maintenanceTaskTypes, setMaintenanceTypes] = useState([]);
   const [roomModel, setRoomModel] = useState([]);
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
   const [roomId, setRoomId] = useState(-1);
-  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(new Date());
+  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(
+    new Date()
+  );
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  
+
   const handleMaintenanceTaskChange = (event) => {
-    setMaintenanceTaskTypeId(event.target.value); 
+    setMaintenanceTaskTypeId(event.target.value);
   };
 
   const handleRoomChange = (event) => {
     setRoomId(event.target.value);
-  }
+  };
 
   const handleMaintenanceTaskDueDate = (event) => {
     setMaintenanceTaskDueDate(event.target.value);
@@ -48,15 +54,15 @@ const CreateMaintenanceTaskModal = ({ open, onClose, addNewMaintenanceTask }) =>
       RoomId: roomId,
       Name: name,
       Description: description,
-      MaintenanceTaskDueDate: maintenanceTaskDueDate
+      MaintenanceTaskDueDate: maintenanceTaskDueDate,
     };
 
     //make post call to save
     const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(maintenanceModel)
-  };
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(maintenanceModel),
+    };
     fetch(apiURL + "/MaintenanceTask/AddMaintenanceTask", requestOptions)
       .then((response) => response.json())
       .then((data) => console.log(data));
@@ -169,7 +175,6 @@ const CreateMaintenanceTaskModal = ({ open, onClose, addNewMaintenanceTask }) =>
         onChange={handleMaintenanceTaskDueDate}
         sx={{ gridColumn: "span 4" }}
       />
-    
     </Box>
   );
   return (
@@ -183,6 +188,5 @@ const CreateMaintenanceTaskModal = ({ open, onClose, addNewMaintenanceTask }) =>
     />
   );
 };
-
 
 export default CreateMaintenanceTaskModal;

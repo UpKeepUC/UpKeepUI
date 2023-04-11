@@ -10,14 +10,14 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Topbar = () => {
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const colorMode = useContext(ColorModeContext);
 
-    return (
-        <Box display="flex" justifyContent="end" p={2}>
-          {/* SEARCH BAR */}
-          {/* <Box
+  return (
+    <Box display="flex" justifyContent="end" p={2}>
+      {/* SEARCH BAR */}
+      {/* <Box
             display="flex"
             backgroundColor={colors.primary[400]}
             borderRadius="3px"
@@ -27,28 +27,28 @@ const Topbar = () => {
               <SearchIcon />
             </IconButton>
           </Box> */}
-    
-          {/* ICONS */}
-          <Box display="flex">
-            <IconButton onClick={colorMode.toggleColorMode}>
-              {theme.palette.mode === "dark" ? (
-                <DarkModeOutlinedIcon />
-              ) : (
-                <LightModeOutlinedIcon />
-              )}
-            </IconButton>
-            <IconButton>
-              <NotificationsOutlinedIcon />
-            </IconButton>
-            <IconButton>
-              <SettingsOutlinedIcon />
-            </IconButton>
-            <IconButton>
-              <PersonOutlinedIcon />
-            </IconButton>
-          </Box>
-        </Box>
-      );
+
+      {/* ICONS */}
+      <Box display="flex">
+        <IconButton onClick={colorMode.toggleColorMode}>
+          {theme.palette.mode === "dark" ? (
+            <DarkModeOutlinedIcon />
+          ) : (
+            <LightModeOutlinedIcon />
+          )}
+        </IconButton>
+        <IconButton>
+          <NotificationsOutlinedIcon />
+        </IconButton>
+        <IconButton>
+          <SettingsOutlinedIcon />
+        </IconButton>
+        <IconButton>
+          <PersonOutlinedIcon />
+        </IconButton>
+      </Box>
+    </Box>
+  );
 };
-    
+
 export default Topbar;

@@ -85,7 +85,7 @@ const MaintenanceTask = () => {
         />
       </Box>
       <Box>
-      <CreateMaintenanceTaskModal
+        <CreateMaintenanceTaskModal
           open={open}
           onClose={() => setOpen(false)}
           addNewMaintenanceTask={addNewMaintenanceTask}

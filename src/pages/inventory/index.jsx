@@ -9,15 +9,11 @@ import CreateInventoryItemModal from "../../components/CreateInventoryItemModal/
 import { grey } from "@mui/material/colors";
 
 const Inventory = () => {
-
-
-  
   const [open, setOpen] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const [inventoryItems, setInventoryItems] = useState([]);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
 
   const addInventoryItems = () => {
     setOpen(true);
@@ -29,14 +25,12 @@ const Inventory = () => {
     setOpen(false);
   };
 
-    const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
       return;
     }
     setSnackOpen(false);
   };
-
-
 
   return (
     <Box m="20px">
@@ -86,7 +80,7 @@ const Inventory = () => {
           severity="error"
           message="Data couldn't be fetched"
           onClose={handleClose}
-          />
+        />
       </Box>
       <Box>
         <CreateInventoryItemModal

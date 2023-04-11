@@ -15,30 +15,29 @@ import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import InventoryView from "./pages/inventory/view";
 
-
 function App() {
   const [theme, colorMode] = useMode();
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <CssBaseline/>
-        <div className="app" >
+        <CssBaseline />
+        <div className="app">
           <Sidebar />
           <main className="content">
             <Topbar />
             <Routes>
-              <Route path ="/" element={<Home />}/>
-              <Route path ="/inventory" element={<Inventory />}/>
-              <Route path ="/maintenanceTask" element={<MaintenanceTask />}/>
-              <Route path ="/calendar" element={<Calendar />}/>
-              <Route path ="/rooms" element={<Rooms />}/>
-              <Route path ="/admin" element={<Admin />}/>
-              <Route path ="/userForm" element={<UserForm />}/>
-              <Route path ="/faq" element={<FAQ />}/>
-              <Route path="/login" element={<SignIn/>} />
-              <Route path="/register" element={<SignUp/>} />
-              <Route path="/inventory/:id" element={<InventoryView/>}/>
+              <Route path="/" element={<Home />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/maintenanceTask" element={<MaintenanceTask />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/rooms" element={<Rooms />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/userForm" element={<UserForm />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/login" element={<SignIn />} />
+              <Route path="/register" element={<SignUp />} />
+              <Route path="/inventory/:id" element={<InventoryView />} />
             </Routes>
           </main>
         </div>
