@@ -72,7 +72,9 @@ const InventoryView = () => {
         headers: { "Content-Type": "application/json" },
       };
       fetch(
-        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + encodeURIComponent(link),
+        apiURL +
+          "/QRCode/GenerateQRCodeForInventoryItem?link=" +
+          encodeURIComponent(link),
         requestOptions
       )
         .then((response) => response.json())
@@ -197,11 +199,12 @@ const InventoryView = () => {
           }}
         >
           <FormControl sx={{ gridColumn: "span 4" }}>
-            <InputLabel id="InventoryItemTypes">Inventory Item Type</InputLabel>
+            <InputLabel  color="grey" id="InventoryItemTypes">Inventory Item Type</InputLabel>
             <Select
               labelId="InventoryItemTypes"
               id="inventoryItemTypes"
               variant="filled"
+              color="grey"
               defaultValue={inventoryTypeId}
               label="Inventory Item Type"
               onChange={handleInventoryItemChange}
@@ -215,11 +218,12 @@ const InventoryView = () => {
           </FormControl>
 
           <FormControl sx={{ gridColumn: "span 4" }}>
-            <InputLabel id="Rooms">Rooms</InputLabel>
+            <InputLabel color="grey" id="Rooms">Rooms</InputLabel>
             <Select
               labelId="Rooms"
               id="rooms"
               variant="filled"
+              color="grey"
               defaultValue={roomId}
               label="Room"
               onChange={handleRoomChange}

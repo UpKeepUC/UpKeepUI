@@ -14,10 +14,13 @@ import {
   FormControl,
   InputLabel,
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
+import { tokens } from "../../theme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
 
 const MaintenanceView = () => {
@@ -25,16 +28,21 @@ const MaintenanceView = () => {
   const [maintenanceTaskTypes, setMaintenanceTaskTypes] = useState([]);
 
   const [maintenanceTaskTypeId, setMaintenanceTaskTypeId] = useState(-1);
-  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(dayjs("2000-01-01"));
+  const [maintenanceTaskDueDate, setMaintenanceTaskDueDate] = useState(
+    dayjs("2000-01-01")
+  );
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
   const [responseReceived, setResponseReceived] = useState(false);
 
-  const handleMaintenanceTaskChange = (event) => {
-    setMaintenanceTaskTypeId(event.target.value); 
-  };
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
+  const handleMaintenanceTaskChange = (event) => {
+    setMaintenanceTaskTypeId(event.target.value);
+  };
 
   const handleMaintenanceTaskDueDate = (event) => {
     setMaintenanceTaskDueDate(event.$d);
@@ -47,18 +55,18 @@ const MaintenanceView = () => {
     setDescription(event.target.value);
   };
 
-    const handleDeleteClick = (event) => {
-      event.preventDefault();
-      const apiURL = process.env.REACT_APP_API_URL;
+  const handleDeleteClick = (event) => {
+    event.preventDefault();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     //build update model
     const maintenanceModel = {
-        MaintenanceTaskId: 0,
-        MaintenanceTaskTypeId: maintenanceTaskTypeId,
-        Name: name,
-        Description: description,
-        MaintenanceTaskDueDate: maintenanceTaskDueDate
-      };
+      MaintenanceTaskId: 0,
+      MaintenanceTaskTypeId: maintenanceTaskTypeId,
+      Name: name,
+      Description: description,
+      MaintenanceTaskDueDate: maintenanceTaskDueDate,
+    };
 
     //submit post
     const requestOptions = {
@@ -66,34 +74,32 @@ const MaintenanceView = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(maintenanceModel),
     };
-      fetch(apiURL + "/MaintenanceTask/DeleteMaintenanceTask", requestOptions)
-        .then(response => response.json())
-        .then(data => console.log(data));
-      
+    fetch(apiURL + "/MaintenanceTask/DeleteMaintenanceTask", requestOptions)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
 
-        navigate('/maintenanceTask');
-        window.location.reload();
-    }
+    navigate("/maintenanceTask");
+    window.location.reload();
+  };
 
-    const handleCloseClick = (event) => {
-       // setup onclose handler instead of refreshing page
-       navigate('/maintenanceTask');
-    }
-  
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const apiURL = process.env.REACT_APP_API_URL;
+  const handleCloseClick = (event) => {
+    // setup onclose handler instead of refreshing page
+    navigate("/maintenanceTask");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     //build update model
     const maintenanceModel = {
-        MaintenanceTaskId: window.location.hash.split('/')[2],
-        MaintenanceTaskTypeId: maintenanceTaskTypeId,
-        Name: name,
-        Description: description,
-        MaintenanceTaskDueDate: maintenanceTaskDueDate,
-        MaintenanceTaskCompletedDate: null
-      };
-
+      MaintenanceTaskId: window.location.hash.split("/")[2],
+      MaintenanceTaskTypeId: maintenanceTaskTypeId,
+      Name: name,
+      Description: description,
+      MaintenanceTaskDueDate: maintenanceTaskDueDate,
+      MaintenanceTaskCompletedDate: null,
+    };
 
     //submit post
     const requestOptions = {
@@ -113,7 +119,7 @@ const MaintenanceView = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const getData = async () => {
-      const id = window.location.hash.split('/')[2];
+      const id = window.location.hash.split("/")[2];
       const response = await axios.get(
         apiURL + "/MaintenanceTask/GetMaintenanceTaskById?id=" + id
       );
@@ -131,108 +137,131 @@ const MaintenanceView = () => {
       if (typeResponse.data) {
         setMaintenanceTaskTypes(typeResponse.data);
         console.log(typeResponse);
-      } 
+      }
     };
     getData();
   }, []);
-
 
   return (
     <Dialog open={responseReceived} m="20px">
       <DialogTitle>Maintenance Task</DialogTitle>
       <DialogContent>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container direction="row" padding="10px">
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="MaintenanceTaskTypes">
-                  Maintenance Task Type
-                </InputLabel>
-                <Select
-                labelId="MaintenanceTaskTypes"
-                id="maintenanceTaskTypes"
-                  defaultValue={maintenanceTaskTypeId}
-                  label="Maintenance Task Type"
-                  onChange={handleMaintenanceTaskChange}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(6, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
+        >
+          <FormControl sx={{ gridColumn: "span 6" }}>
+            <InputLabel color="grey" id="MaintenanceTaskTypes">
+              Maintenance Task Type
+            </InputLabel>
+            <Select
+              labelId="MaintenanceTaskTypes"
+              id="maintenanceTaskTypes"
+              defaultValue={maintenanceTaskTypeId}
+              label="Maintenance Task Type"
+              onChange={handleMaintenanceTaskChange}
+              variant="filled"
+              color="grey"
+            >
+              {maintenanceTaskTypes.map((maintenanceTaskTypeModel) => (
+                <MenuItem
+                  value={maintenanceTaskTypeModel.maintenanceTaskTypeId}
                 >
-                  {maintenanceTaskTypes.map((maintenanceTaskTypeModel) => (
-                    <MenuItem value={maintenanceTaskTypeModel.maintenanceTaskTypeId}>
-                      {maintenanceTaskTypeModel.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid container direction="row">
-            <Grid item xs={12} padding="10px">
-              <TextField
-                label="Name"
-                required
-                name="name"
-                fullWidth
-                id="name"
-                defaultValue={name}
-                onChange={handleName}
-              />
-            </Grid>
-            <Grid item xs={12} padding="10px">
-              <TextField
-                label="Description"
-                required
-                name="description"
-                fullWidth
-                id="description"
-                defaultValue={description}
-                onChange={handleDescription}
-              />
-            </Grid>
-            <Grid item xs={12} padding="10px">
-              <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Maintenance Task Due Date"
-                  defaultValue={dayjs(maintenanceTaskDueDate)}
-                  onChange={handleMaintenanceTaskDueDate}
-                />
-              </LocalizationProvider>              
-              </Grid>
-            </Grid>
-            </Box>
-            </DialogContent>
-            <DialogActions>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleCloseClick}
-            >
-              Close
-            </Button>
-            </DialogActions>
-            
+                  {maintenanceTaskTypeModel.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        
-      </Dialog>
-    );
-  };
-  
-  export default MaintenanceView;
+          <TextField
+            label="Name"
+            required
+            name="name"
+            variant="filled"
+            color="grey"
+            id="name"
+            defaultValue={name}
+            onChange={handleName}
+            sx={{ gridColumn: "span 6" }}
+          />
+
+          <TextField
+            label="Description"
+            required
+            multiline
+            name="description"
+            variant="filled"
+            color="grey"
+            id="description"
+            defaultValue={description}
+            onChange={handleDescription}
+            sx={{ gridColumn: "span 6" }}
+          />
+
+          <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Maintenance Task Due Date"
+              defaultValue={dayjs(maintenanceTaskDueDate)}
+              onChange={handleMaintenanceTaskDueDate}
+              variant="filled"
+              color="grey"
+              sx={{ gridColumn: "span 6" }}
+            />
+          </LocalizationProvider>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Box
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
+        >
+          <Button
+            type="submit"
+            color="success"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+          >
+            Save
+          </Button>
+          <Button
+            color="error"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleDeleteClick}
+          >
+            Delete
+          </Button>
+          <Button
+            color="warning"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleCloseClick}
+          >
+            Close
+          </Button>
+        </Box>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default MaintenanceView;
