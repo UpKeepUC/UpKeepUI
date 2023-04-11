@@ -1,13 +1,14 @@
 {
   "files": {
     "main.css": "/UpKeepUI/static/css/main.0da793a0.css",
-    "main.js": "/UpKeepUI/static/js/main.017500c5.js",
+    "main.js": "/UpKeepUI/static/js/main.b6a73b55.js",
+    "static/media/logo.jpg": "/UpKeepUI/static/media/logo.b7b2ff032a704282df86.jpg",
     "index.html": "/UpKeepUI/index.html",
     "main.0da793a0.css.map": "/UpKeepUI/static/css/main.0da793a0.css.map",
-    "main.017500c5.js.map": "/UpKeepUI/static/js/main.017500c5.js.map"
+    "main.b6a73b55.js.map": "/UpKeepUI/static/js/main.b6a73b55.js.map"
   },
   "entrypoints": [
     "static/css/main.0da793a0.css",
-    "static/js/main.017500c5.js"
+    "static/js/main.b6a73b55.js"
   ]
 }

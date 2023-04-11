@@ -72,7 +72,7 @@ const InventoryView = () => {
         headers: { "Content-Type": "application/json" },
       };
       fetch(
-        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + link,
+        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + encodeURIComponent(link),
         requestOptions
       )
         .then((response) => response.json())
@@ -233,6 +233,7 @@ const InventoryView = () => {
           </FormControl>
 
           <TextField
+            color="grey"
             label="Cost"
             required
             variant="filled"
@@ -244,7 +245,7 @@ const InventoryView = () => {
             sx={{ gridColumn: "span 4" }}
           />
 
-          <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Purchase Date"
               variant="filled"
