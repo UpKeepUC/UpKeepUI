@@ -11,7 +11,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useTheme, ThemeProvider } from "@mui/material/styles";
+import { tokens } from "../../theme";
 import {useNavigate} from 'react-router-dom'
 import { useEffect } from 'react';
 import jwtDecode from "jwt-decode";
@@ -35,10 +36,10 @@ function Copyright(props) {
 }
 
 
-const theme = createTheme();
 
 const SignIn = ({ setAuthenticated }) => {
-
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   useEffect(() => {
     let token = localStorage.getItem("upkeeptoken");
 
@@ -124,6 +125,8 @@ const SignIn = ({ setAuthenticated }) => {
           >
             <TextField
               margin="normal"
+              variant="filled"
+              color="grey"
               required
               fullWidth
               id="email"
@@ -134,6 +137,8 @@ const SignIn = ({ setAuthenticated }) => {
             />
             <TextField
               margin="normal"
+              variant="filled"
+              color="grey"
               required
               fullWidth
               name="password"
@@ -150,6 +155,7 @@ const SignIn = ({ setAuthenticated }) => {
               type="submit"
               fullWidth
               variant="contained"
+              color="secondary"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
