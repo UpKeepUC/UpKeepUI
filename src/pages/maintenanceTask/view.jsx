@@ -256,7 +256,7 @@ const MaintenanceView = () => {
             sx={{ mt: 3, mb: 2 }}
             onClick={handleCloseClick}
           >
-            Close
+            Cancel
           </Button>
         </Box>
       </DialogActions>
