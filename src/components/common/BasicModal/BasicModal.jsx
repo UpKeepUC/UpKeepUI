@@ -24,7 +24,7 @@ const BasicModal = ({ open, onClose, title, subTitle, content, onSubmit }) => {
             Submit
           </CommonButton>
 
-          <CommonButton variant="contained" color="primary" onClick={onClose}>
+          <CommonButton variant="contained" color="warning" onClick={onClose}>
             Cancel
           </CommonButton>
         </Stack>

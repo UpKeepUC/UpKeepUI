@@ -14,10 +14,13 @@ import {
   FormControl,
   InputLabel,
   Grid,
+  useTheme,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
+import { tokens } from "../../theme";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";
 
 const MaintenanceView = () => {
@@ -32,8 +35,12 @@ const MaintenanceView = () => {
 
   const [responseReceived, setResponseReceived] = useState(false);
 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+
   const handleMaintenanceTaskChange = (event) => {
-    setMaintenanceTaskTypeId(event.target.value); 
+    setMaintenanceTaskTypeId(event.target.value);
   };
 
   const handleMaintenanceTaskCompletedDate = (event) => {
@@ -63,14 +70,14 @@ const MaintenanceView = () => {
       }
     }
 
-    const handleCloseClick = (event) => {
-       // setup onclose handler instead of refreshing page
-       navigate('/maintenanceTask');
-    }
-  
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const apiURL = process.env.REACT_APP_API_URL;
+  const handleCloseClick = (event) => {
+    // setup onclose handler instead of refreshing page
+    navigate("/maintenanceTask");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const apiURL = process.env.REACT_APP_API_URL;
 
     //build update model
     const maintenanceModel = {
@@ -81,7 +88,6 @@ const MaintenanceView = () => {
         MaintenanceTaskDueDate: maintenanceTaskDueDate,
         MaintenanceTaskCompletedDate: maintenanceTaskCompletedDate
       };
-
 
     //submit post
     const requestOptions = {
@@ -100,7 +106,7 @@ const MaintenanceView = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const getData = async () => {
-      const id = window.location.hash.split('/')[2];
+      const id = window.location.hash.split("/")[2];
       const response = await axios.get(
         apiURL + "/MaintenanceTask/GetMaintenanceTaskById?id=" + id
       );
@@ -123,112 +129,130 @@ const MaintenanceView = () => {
     getData();
   }, []);
 
-
   return (
     <Dialog open={responseReceived} m="20px">
       <DialogTitle>Maintenance Task</DialogTitle>
       <DialogContent>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container direction="row" padding="10px">
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel id="MaintenanceTaskTypes">
-                  Maintenance Task Type
-                </InputLabel>
-                <Select
-                labelId="MaintenanceTaskTypes"
-                id="maintenanceTaskTypes"
-                  defaultValue={maintenanceTaskTypeId}
-                  label="Maintenance Task Type"
-                  onChange={handleMaintenanceTaskChange}
+        <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(6, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
+        >
+          <FormControl sx={{ gridColumn: "span 6" }}>
+            <InputLabel color="grey" id="MaintenanceTaskTypes">
+              Maintenance Task Type
+            </InputLabel>
+            <Select
+              labelId="MaintenanceTaskTypes"
+              id="maintenanceTaskTypes"
+              defaultValue={maintenanceTaskTypeId}
+              label="Maintenance Task Type"
+              onChange={handleMaintenanceTaskChange}
+              variant="filled"
+              color="grey"
+            >
+              {maintenanceTaskTypes.map((maintenanceTaskTypeModel) => (
+                <MenuItem
+                  value={maintenanceTaskTypeModel.maintenanceTaskTypeId}
                 >
-                  {maintenanceTaskTypes.map((maintenanceTaskTypeModel) => (
-                    <MenuItem value={maintenanceTaskTypeModel.maintenanceTaskTypeId}>
-                      {maintenanceTaskTypeModel.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid container direction="row">
-            <Grid item xs={12} padding="10px">
-              <TextField
-                label="Name"
-                required
-                name="name"
-                fullWidth
-                id="name"
-                defaultValue={name}
-                onChange={handleName}
-              />
-            </Grid>
-            <Grid item xs={12} padding="10px">
-              <TextField
-                label="Description"
-                required
-                name="description"
-                fullWidth
-                id="description"
-                defaultValue={description}
-                onChange={handleDescription}
-              />
-            </Grid>
-            <Grid item xs={12} padding="10px">
-              <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Maintenance Task Due Date"
-                  defaultValue={dayjs(maintenanceTaskDueDate)}
-                  onChange={handleMaintenanceTaskDueDate}
-                />
-              </LocalizationProvider>              
-              </Grid>
-              <Grid item xs={12} padding="10px">
-              <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+                  {maintenanceTaskTypeModel.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Name"
+            required
+            name="name"
+            variant="filled"
+            color="grey"
+            id="name"
+            defaultValue={name}
+            onChange={handleName}
+            sx={{ gridColumn: "span 6" }}
+          />
+
+          <TextField
+            label="Description"
+            required
+            multiline
+            name="description"
+            variant="filled"
+            color="grey"
+            id="description"
+            defaultValue={description}
+            onChange={handleDescription}
+            sx={{ gridColumn: "span 6" }}
+          />
+
+          <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Maintenance Task Due Date"
+              defaultValue={dayjs(maintenanceTaskDueDate)}
+              onChange={handleMaintenanceTaskDueDate}
+              variant="filled"
+              color="grey"
+              sx={{ gridColumn: "span 6" }}
+            />
+          </LocalizationProvider>
+
+          <LocalizationProvider fullWidth dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Maintenance Task Completed Date"
                   defaultValue={dayjs(maintenanceTaskDueDate)}
                   onChange={handleMaintenanceTaskCompletedDate}
+                  variant="filled"
+                  color="grey"
+                  sx={{ gridColumn: "span 6" }}
                 />
-              </LocalizationProvider>              
-              </Grid>
-            </Grid>
-            </Box>
-            </DialogContent>
-            <DialogActions>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
-            >
-              Save
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </Button>
-            <Button
-              color="error"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleCloseClick}
-            >
-              Close
-            </Button>
-            </DialogActions>
-            
-
+              </LocalizationProvider>  
+        </Box>
+      </DialogContent>
+      <DialogActions>
+          <Button
+            type="submit"
+            color="success"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleSubmit}
+            size="large"
+          >
+            Save
+          </Button>
+          <Button
+            color="error"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleDeleteClick}
+            size="large"
+          >
+            Delete
+          </Button>
+          <Button
+            color="warning"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleCloseClick}
+            size="large"
+          >
+            Cancel
+          </Button>
         
-      </Dialog>
-    );
-  };
-  
-  export default MaintenanceView;
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+export default MaintenanceView;
