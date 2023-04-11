@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import axios from "axios";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const InventoryView = () => {
   const navigate = useNavigate();
@@ -35,6 +36,8 @@ const InventoryView = () => {
   const [qrCodeId, setQrCodeId] = useState("");
 
   const [responseReceived, setResponseReceived] = useState(false);
+
+  const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const handleInventoryItemChange = (event) => {
     setInventoryItemTypeId(event.target.value); //inventory item type id
