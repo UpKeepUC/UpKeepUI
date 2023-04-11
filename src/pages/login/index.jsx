@@ -12,6 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {useNavigate} from 'react-router-dom'
+import { useEffect } from 'react';
+import jwtDecode from "jwt-decode";
 
 function Copyright(props) {
   return (
@@ -31,37 +34,64 @@ function Copyright(props) {
   );
 }
 
+
 const theme = createTheme();
 
-export default function SignIn() {
+const SignIn = ({ setAuthenticated }) => {
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+
+    if(token !== null){
+      let decodedToken = jwtDecode(token);
+      console.log("Decoded Token", decodedToken);
+      let currentDate = new Date();
+    
+      // JWT exp is in seconds
+      if (decodedToken.exp * 1000 < currentDate.getTime()) {
+        console.log("Token expired.");
+      } else {
+        console.log("Valid token");   
+        setAuthenticated(true);
+        navigate("/home");
+      }
+    }
+
+  },[]);
+
+
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     fetchSignIn(data);
   };
 
+
   async function fetchSignIn(data) {
     const apiURL = process.env.REACT_APP_API_URL;
-    const response = await fetch(apiURL + "/Accounts/Login/Login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: data.get("email"),
-        password: data.get("password"),
-      }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
+      console.log("attempting login");
 
-    console.log(response);
-    // .then((response) => {
-    //     console.log(response);
-    //     console.log(response.body);
-    // })
-    // .then((json) => {
-    //     console.log(json);
-    // })
-    // .catch(errorReason => {console.log(errorReason)});
+        //make post call to save
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: data.get("email"),
+            password: data.get("password"),
+          }),
+        };
+        fetch("https://localhost:7285/api/Accounts/Login/Login", requestOptions)
+          .then((response) => response.text())
+          .then((data) => {
+
+            console.log(data);
+
+              setAuthenticated(true);
+              localStorage.setItem('token', data);
+              navigate("/home");
+
+          });
   }
 
   return (
@@ -127,7 +157,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link href="UpKeepUI#/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -139,3 +169,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;

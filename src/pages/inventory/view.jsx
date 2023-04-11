@@ -65,7 +65,7 @@ const InventoryView = () => {
         headers: { "Content-Type": "application/json" },
       };
       fetch(
-        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + link,
+        apiURL + "/QRCode/GenerateQRCodeForInventoryItem?link=" + encodeURIComponent(link),
         requestOptions
       )
         .then((response) => response.json())

@@ -1,6 +1,7 @@
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes, useNavigate, Navigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Topbar from "./pages/global/topbar";
 import Sidebar from "./pages/global/sidebar";
 import Home from "./pages/home";
@@ -17,17 +18,28 @@ import InventoryView from "./pages/inventory/view";
 
 function App() {
   const [theme, colorMode] = useMode();
+  const [authenticated, setAuthenticated] = useState(false);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar />
+
+
+          {authenticated && <Sidebar />}
           <main className="content">
             <Topbar />
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<SignIn setAuthenticated={setAuthenticated} />} />
+                
+
+              <Route path="/" element={authenticated ? <Home /> : <SignIn setAuthenticated={setAuthenticated} />} />
+
+
+              <Route path="/register" element={<SignUp />} />
+
+              <Route path="/home" element={<Home />} />
               <Route path="/inventory" element={<Inventory />} />
               <Route path="/maintenanceTask" element={<MaintenanceTask />} />
               <Route path="/calendar" element={<Calendar />} />
@@ -35,8 +47,7 @@ function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/userForm" element={<UserForm />} />
               <Route path="/faq" element={<FAQ />} />
-              <Route path="/login" element={<SignIn />} />
-              <Route path="/register" element={<SignUp />} />
+              
               <Route path="/inventory/:id" element={<InventoryView />} />
             </Routes>
           </main>
