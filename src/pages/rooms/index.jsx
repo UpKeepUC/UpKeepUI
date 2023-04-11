@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/common/Header";
 import "../../index.css";
 import RoomModal from "../../components/RoomModal/RoomModal";
+import { useNavigate } from "react-router-dom";
 
 const Rooms = ({ onError }) => {
+  const navigate = useNavigate();
+
   const [selectedRoom, setRoom] = useState(null);
   const [rooms, setRooms] = useState([]);
 
@@ -21,6 +24,7 @@ const Rooms = ({ onError }) => {
 
   const handleRoomClick = (room) => {
     setRoom(room);
+    navigate("/room/" + room.roomId)
   };
 
   return (
@@ -47,12 +51,6 @@ const Rooms = ({ onError }) => {
           </Grid>
         </Grid>
       </Box>
-      {selectedRoom && (
-        <RoomModal
-          selectedObject={selectedRoom}
-          onClose={() => setRoom(null)}
-        />
-      )}
     </Box>
   );
 };

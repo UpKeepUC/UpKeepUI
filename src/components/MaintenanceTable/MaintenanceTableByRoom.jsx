@@ -30,7 +30,7 @@ function MaintenanceTable(props) {
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];
     console.log(id);
-    fetch(apiURL + "/MaintenanceTask/GetMaintenanceTaskByRoomId?id=" + id)
+    fetch(apiURL + "/MaintenanceTask/GetMaintenanceTaskByRoomId?id=" + roomId)
       .then((response) => response.json())
       .then((json) => {
         console.log(json);

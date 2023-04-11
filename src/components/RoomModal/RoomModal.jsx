@@ -1,16 +1,56 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Modal, useTheme } from "@mui/material";
+import { Box, 
+  useTheme,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions 
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { tokens } from "../../theme";
 import Button from "@mui/material/Button";
 import InventoryTable from "../InventoryTable/InventoryTableByRoom";
 import MaintenanceTable from "../MaintenanceTable/MaintenanceTableByRoom";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function RoomModal(props) {
+const RoomModal = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // Access the object through the props
-  const { selectedObject } = props;
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate();
+
+  const [roomNumber, setRoomNumber] = useState("");
+  const [roomLocation, setRoomLocation] = useState("");
+  const [roomId, setRoomId] = useState(-1);
+  const [roomTypeId, setRoomTypeId] = useState(-1);
+
+  const [responseReceived, setResponseReceived] = useState(false);
+
+  useEffect(() => {
+    const getData = async () => {
+      const apiURL = process.env.REACT_APP_API_URL;
+      const id = window.location.hash.split("/")[2];
+      const response = await axios.get(
+        apiURL + "/Room/GetRoomById?id=" + id
+      );
+      if (response.data) {
+        setRoomNumber(response.data.roomNumber);
+        setRoomLocation(response.data.roomLocation);
+        setRoomId(response.data.roomId);
+        setRoomTypeId(response.data.roomTypeId);
+
+        setResponseReceived(true);
+      }
+    };
+    getData();
+
+  },[]);
+
+  const handleClose = (event) =>{
+    navigate("/rooms")
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,28 +60,24 @@ function RoomModal(props) {
     console.log("save");
   };
 
-  const handleClose = () => {
-    console.log("close");
-  };
-
   return (
-    <div
-      sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        width: "75%",
-        bgcolor: "background.paper",
-        boxShadow: 24,
-        p: 4,
-      }}
-    >
-      <h2>Room Number: {selectedObject.roomNumber}</h2>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={4} sm={2}>
-            <TextField
+    <Dialog open={responseReceived} m="20px">
+      <DialogTitle>Room Number: {roomNumber}</DialogTitle>
+      <DialogContent>
+      <Box
+          component="form"
+          noValidate
+          onSubmit={handleSubmit}
+          display="grid"
+          gap="30px"
+          gridTemplateColumns="repeat(6, minmax(0, 1fr))"
+          sx={{
+            mt: 3,
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
+            "& .MuiTextField-root": { alignContent: "center" },
+          }}
+        >
+          <TextField
               name="roomLocation"
               color="grey"
               variant="filled"
@@ -49,11 +85,10 @@ function RoomModal(props) {
               fullWidth
               id="roomLocation"
               label="Room Location"
-              value={selectedObject.roomLocation}
+              defaultValue={roomLocation}
+              sx={{ gridColumn: "span 4" }}
               autoFocus
             />
-          </Grid>
-          <Grid item xs={4} sm={2}>
             <TextField
               required
               color="grey"
@@ -62,23 +97,11 @@ function RoomModal(props) {
               id="roomNumber"
               label="Room Number"
               name="roomNumber"
-              value={selectedObject.roomNumber}
+              value={roomNumber}
+              sx={{ gridColumn: "span 2" }}
             />
-          </Grid>
-          <Grid item xs={4} >
-            <Button
-              justifyContent="space-between"
-              type="submit"
-              variant="contained"
-              color="secondary"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Save
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box
+        </Box>
+        <Box
         m="40px 0 0 0"
         height="75vh"
         sx={{
@@ -106,14 +129,36 @@ function RoomModal(props) {
       >
         <Box>
           <h2>Inventory Items in Room</h2>
-          <InventoryTable roomId={selectedObject.roomId} />
+          <InventoryTable roomId={roomId} />
         </Box>
         <Box>
           <h2>Maintenance Tasks for Room</h2>
-          <MaintenanceTable roomId={selectedObject.roomId} />
+          <MaintenanceTable roomId={roomId} />
         </Box>
       </Box>
-    </div>
+      </DialogContent>
+      <DialogActions>
+      <Button
+              justifyContent="space-between"
+              type="submit"
+              variant="contained"
+              color="secondary"
+              fullWidth
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Save
+            </Button>
+            <Button
+            color="warning"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
+      </DialogActions>
+    </ Dialog>
   );
 }
 

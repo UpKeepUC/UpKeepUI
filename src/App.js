@@ -17,6 +17,7 @@ import SignUp from "./pages/register";
 import InventoryView from "./pages/inventory/view";
 import MaintenanceView from "./pages/maintenanceTask/view";
 import jwtDecode from "jwt-decode";
+import RoomModal from "./components/RoomModal/RoomModal";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -72,6 +73,7 @@ function App() {
               
               <Route path="/inventory/:id" element={authenticated ?<InventoryView />: <SignIn setAuthenticated={setAuthenticated} />} />
               <Route path="/maintenanceTask/:id" element={authenticated ?<MaintenanceView/>: <SignIn setAuthenticated={setAuthenticated} />}/>
+              <Route path="/room/:id" element={authenticated ?<RoomModal/>: <SignIn setAuthenticated={setAuthenticated} />}/>
             </Routes>
           </main>
         </div>
