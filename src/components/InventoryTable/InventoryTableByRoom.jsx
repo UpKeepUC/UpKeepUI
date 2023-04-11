@@ -3,6 +3,15 @@ import Box from "@mui/material/Box";
 import { GridToolbar } from "@mui/x-data-grid";
 import DataTable from "../common/dataTable";
 
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+const usdPrice = {
+  type: "number",
+  valueFormatter: ({ value }) => currencyFormatter.format(value),
+};
 const columns = [
   {
     field: "inventoryItemId",
@@ -17,8 +26,21 @@ const columns = [
     flex: 1,
     valueFormatter: ({ value }) => value.name,
   },
-  { field: "inventoryItemCost", headerName: "Item Cost", flex: 1 },
-  { field: "purchaseDate", headerName: "Purchase Date", type: "date", flex: 1 },
+  {
+    field: "inventoryItemCost",
+    headerName: "Item Cost",
+    ...usdPrice,
+    headerAlign: "left",
+    align: "left",
+    flex: 0.5,
+  },
+  {
+    field: "purchaseDate",
+    headerName: "Purchase Date",
+    type: "date",
+    valueGetter: ({ value }) => value && new Date(value),
+    flex: 0.75,
+  },
   {
     field: "roomModel",
     headerName: "Room",

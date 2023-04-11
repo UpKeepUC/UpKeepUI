@@ -8,6 +8,7 @@ const columns = [
     type: "number",
     headerAlign: "left",
     align: "left",
+    flex: 0.3
   },
   { field: "name", headerName: "Name", flex: 0.5 },
   { field: "description", headerName: "Description", flex: 1.25 },

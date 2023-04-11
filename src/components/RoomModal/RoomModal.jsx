@@ -61,8 +61,8 @@ const RoomModal = () => {
   };
 
   return (
-    <Dialog open={responseReceived} m="20px">
-      <DialogTitle>Room Number: {roomNumber}</DialogTitle>
+    <Dialog open={responseReceived} m="20px" >
+      <DialogTitle><h2>Room Number: {roomNumber}</h2></DialogTitle>
       <DialogContent>
       <Box
           component="form"
@@ -70,10 +70,10 @@ const RoomModal = () => {
           onSubmit={handleSubmit}
           display="grid"
           gap="30px"
-          gridTemplateColumns="repeat(6, minmax(0, 1fr))"
+          gridTemplateColumns="repeat(12, minmax(0, 1fr))"
           sx={{
             mt: 3,
-            "& > div": { gridColumn: isNonMobile ? undefined : "span 6" },
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 12" },
             "& .MuiTextField-root": { alignContent: "center" },
           }}
         >
@@ -86,7 +86,7 @@ const RoomModal = () => {
               id="roomLocation"
               label="Room Location"
               defaultValue={roomLocation}
-              sx={{ gridColumn: "span 4" }}
+              sx={{ gridColumn: "span 8" }}
               autoFocus
             />
             <TextField
@@ -98,7 +98,7 @@ const RoomModal = () => {
               label="Room Number"
               name="roomNumber"
               value={roomNumber}
-              sx={{ gridColumn: "span 2" }}
+              sx={{ gridColumn: "span 4" }}
             />
         </Box>
         <Box
@@ -124,6 +124,9 @@ const RoomModal = () => {
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
             backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
           },
         }}
       >
