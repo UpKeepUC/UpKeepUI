@@ -94,7 +94,6 @@ const MaintenanceView = () => {
         MaintenanceTaskCompletedDate: null
       };
 
-      console.log("updating mt");
 
     //submit post
     const requestOptions = {
