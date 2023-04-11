@@ -14,6 +14,7 @@ import FAQ from "./pages/faq";
 import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import InventoryView from "./pages/inventory/view";
+import MaintenanceView from "./pages/maintenanceTask/view";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -27,17 +28,18 @@ function App() {
           <main className="content">
             <Topbar />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/inventory" element={<Inventory />} />
-              <Route path="/maintenanceTask" element={<MaintenanceTask />} />
-              <Route path="/calendar" element={<Calendar />} />
-              <Route path="/rooms" element={<Rooms />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/userForm" element={<UserForm />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/login" element={<SignIn />} />
-              <Route path="/register" element={<SignUp />} />
-              <Route path="/inventory/:id" element={<InventoryView />} />
+              <Route path ="/" element={<Home />}/>
+              <Route path ="/inventory" element={<Inventory />}/>
+              <Route path ="/maintenanceTask" element={<MaintenanceTask />}/>
+              <Route path ="/calendar" element={<Calendar />}/>
+              <Route path ="/rooms" element={<Rooms />}/>
+              <Route path ="/admin" element={<Admin />}/>
+              <Route path ="/userForm" element={<UserForm />}/>
+              <Route path ="/faq" element={<FAQ />}/>
+              <Route path="/login" element={<SignIn/>} />
+              <Route path="/register" element={<SignUp/>} />
+              <Route path="/inventory/:id" element={<InventoryView/>}/>
+              <Route path="/maintenanceTask/:id" element={<MaintenanceView/>}/>
             </Routes>
           </main>
         </div>

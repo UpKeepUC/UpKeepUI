@@ -45,18 +45,18 @@ const MaintenanceTable = ({ onError }) => {
         console.log(json);
       })
       .catch(() => onError());
-  }, []);
+  }, []); 
 
-  return (
-    <DataTable
-      rows={maintenanceTasks}
-      columns={columns}
-      loading={!maintenanceTasks.length}
-      sx={MaintenanceTasksTableStyles}
-      getRowId={(row) => row.maintenanceTaskId}
-      // handleClick={(event) => navigate('/maintenanceTask/' + event.id)}
-    />
-  );
+return (
+        <DataTable
+            rows={maintenanceTasks}
+            columns={columns}
+            loading={!maintenanceTasks.length}
+            sx={MaintenanceTasksTableStyles}
+            getRowId={(row) => row.maintenanceTaskId}
+            handleClick={(event) => navigate('/maintenanceTask/' + event.id)}
+            />
+    );
 };
 
 export default MaintenanceTable;
