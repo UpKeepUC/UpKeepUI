@@ -14,6 +14,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
+import logo from '../../assets/logo.jpg'
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -96,7 +98,7 @@ const Sidebar = () => {
                   alt="UpKeep Logo"
                   width="100px"
                   height="100px"
-                  src={`../UpKeepUI/public/assets/logo.jpg`}
+                  src={logo}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
