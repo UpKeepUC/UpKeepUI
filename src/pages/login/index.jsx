@@ -40,20 +40,25 @@ const theme = createTheme();
 const SignIn = ({ setAuthenticated }) => {
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem("upkeeptoken");
 
     if(token !== null){
-      let decodedToken = jwtDecode(token);
-      console.log("Decoded Token", decodedToken);
-      let currentDate = new Date();
-    
-      // JWT exp is in seconds
-      if (decodedToken.exp * 1000 < currentDate.getTime()) {
-        console.log("Token expired.");
-      } else {
-        console.log("Valid token");   
-        setAuthenticated(true);
-        navigate("/home");
+      try{
+        let decodedToken = jwtDecode(token);
+        console.log("Decoded Token", decodedToken);
+        let currentDate = new Date();
+  
+        // JWT exp is in seconds
+        if (decodedToken.exp * 1000 < currentDate.getTime()) {
+          console.log("Token expired.");
+        } else {
+          console.log("Valid token");
+          setAuthenticated(true);
+          navigate("/home");
+        }
+      }
+      catch(err){
+        console.log(err);      
       }
     }
 
@@ -85,12 +90,11 @@ const SignIn = ({ setAuthenticated }) => {
           .then((response) => response.text())
           .then((data) => {
 
-            console.log(data);
-
+            if(data !== "Invalid Authentication"){
               setAuthenticated(true);
-              localStorage.setItem('token', data);
+              localStorage.setItem('upkeeptoken', data);
               navigate("/home");
-
+            }
           });
   }
 
