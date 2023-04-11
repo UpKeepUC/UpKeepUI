@@ -39,27 +39,25 @@ export default function SignUp() {
     const apiURL = process.env.REACT_APP_API_URL;
     const data = new FormData(event.currentTarget);
 
-    fetch(apiURL + "/Accounts/Register/Register", {
-      method: "POST",
-      body: JSON.stringify({
-        firstName: data.get("firstName"),
-        lastName: data.get("lastName"),
-        email: data.get("email"),
-        password: data.get("password"),
-        confirmPassword: data.get("password"),
-        userName: data.get("email"),
-      }),
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      })
-      .catch((errorReason) => {
-        console.log(errorReason);
-      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: data.get("firstName"),
+          lastName: data.get("lastName"),
+          email: data.get("email"),
+          password: data.get("password"),
+          confirmPassword: data.get("password"),
+          userName: data.get("email"),
+        }),
+      };
+
+    
+    fetch("https://localhost:7285/api/Accounts/Register/Register", requestOptions)
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+        
   };
 
   return (
