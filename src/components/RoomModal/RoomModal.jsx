@@ -40,9 +40,11 @@ function RoomModal(props) {
       <h2>Room Number: {selectedObject.roomNumber}</h2>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={4} sm={2}>
             <TextField
               name="roomLocation"
+              color="grey"
+              variant="filled"
               required
               fullWidth
               id="roomLocation"
@@ -51,26 +53,30 @@ function RoomModal(props) {
               autoFocus
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={4} sm={2}>
             <TextField
               required
+              color="grey"
               fullWidth
+              variant="filled"
               id="roomNumber"
               label="Room Number"
               name="roomNumber"
               value={selectedObject.roomNumber}
             />
           </Grid>
+          <Grid item xs={4} >
+            <Button
+              justifyContent="space-between"
+              type="submit"
+              variant="contained"
+              color="secondary"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Save
+            </Button>
+          </Grid>
         </Grid>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Save
-        </Button>
       </Box>
       <Box
         m="40px 0 0 0"
